@@ -1,20 +1,33 @@
-// Hice un sumador de numeros pares que para saber
-// si el numero es par, utilice un condicional para
-// descartar los numeros impares
+const productos = [
+  { nombre: 'Producto 1', precio: 100 },
+  { nombre: 'Producto 2', precio: 200 },
+  { nombre: 'Producto 3', precio: 300 },
+  { nombre: 'Producto 4', precio: 400 },
+  { nombre: 'Producto 5', precio: 500 }
+];
 
-function sumaNumerosPares () {
-    let suma = 0;
-
-    for (let i = 0; i <= 8; i++) {
-
-        if (i % 2 === 0) {
-        suma += i;
-      }
-
-    }
-  
-    return suma;
+function mostrarProductos() {
+  const listaProductos = document.getElementById('listaProductos');
+  listaProductos.innerHTML = '';
+  for (let i = 0; i < productos.length; i++) {
+      const producto = productos[i];
+      const li = document.createElement('li');
+      li.textContent = `${producto.nombre} - $${producto.precio}`;
+      listaProductos.appendChild(li);
   }
-  
-  const resultado = sumaNumerosPares();
-  console.log("La suma de los números pares es: " + resultado);
+}
+
+
+// filtro precio
+const filtroPrecio = (min, max) => {
+  return productos.filter(producto => producto.precio >= min && producto.precio <= max);
+};
+
+// filtro nombre
+const filtroNombre = (nombre) => {
+  return productos.filter(product => product.nombre.toLowerCase().includes(nombre.toLowerCase()));
+};
+
+// ejemplo de busqueda y filtrado
+console.log(filtroPrecio(200, 400));
+console.log(filtroNombre('producto 2'));
