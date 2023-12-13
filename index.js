@@ -1,33 +1,96 @@
-const productos = [
-  { nombre: 'Producto 1', precio: 100 },
-  { nombre: 'Producto 2', precio: 200 },
-  { nombre: 'Producto 3', precio: 300 },
-  { nombre: 'Producto 4', precio: 400 },
-  { nombre: 'Producto 5', precio: 500 }
-];
-
-function mostrarProductos() {
-  const listaProductos = document.getElementById('listaProductos');
-  listaProductos.innerHTML = '';
-  for (let i = 0; i < productos.length; i++) {
-      const producto = productos[i];
-      const li = document.createElement('li');
-      li.textContent = `${producto.nombre} - $${producto.precio}`;
-      listaProductos.appendChild(li);
+class Producto {
+  constructor(id, nombre, precio) {
+    this.id = id;
+    this.nombre = nombre;
+    this.precio = precio;
+    this.cantidad = 1;
   }
 }
 
+const REMERA1 = new Producto (1, 'Remera 1', 100);
+const REMERA2 = new Producto (2, 'Remera 2', 200);
+const REMERA3 = new Producto (3, 'Remera 3', 300);
+const REMERA4 = new Producto (4, 'Remera 4', 400);
 
-// filtro precio
-const filtroPrecio = (min, max) => {
-  return productos.filter(producto => producto.precio >= min && producto.precio <= max);
-};
+const PRODUCTOS = [REMERA1, REMERA2, REMERA3, REMERA4];
 
-// filtro nombre
-const filtroNombre = (nombre) => {
-  return productos.filter(product => product.nombre.toLowerCase().includes(nombre.toLowerCase()));
-};
+let carrito = [];
 
-// ejemplo de busqueda y filtrado
-console.log(filtroPrecio(200, 400));
-console.log(filtroNombre('producto 2'));
+const CONTENEDOR_PRODUCTOS = document.getElementById("listaProductos");
+
+const MOSTRAR_PRODUCTOS = () => {
+  PRODUCTOS.forEach(producto =>{
+    const card = document.createElement("div");
+    //quite la imagen porque se me iba mucho el tamanio y lo escribi asi porque no tengo enie
+    card.innerHTML = 
+    `
+    <img src="" alt="">
+    <div>
+      <h2>${producto.nombre}</h2>
+      <p>${producto.precio}</p>
+      <button id="boton${producto.id}">agregar producto</button>
+    </div>
+    `
+
+  CONTENEDOR_PRODUCTOS.appendChild(card);
+
+  const BOTON = document.getElementById(`boton${producto.id}`)
+  BOTON.addEventListener("click", () => {
+    agregarCarrito(producto.id);
+  })
+
+  });
+}
+
+MOSTRAR_PRODUCTOS();
+
+const agregarCarrito = (id) =>{
+  const productoEnCarrito = carrito.find(producto => producto.id === id);
+  if (productoEnCarrito) {
+    productoEnCarrito++;
+  } else {
+      const producto = PRODUCTOS.find(producto => producto.id === id); 
+      carrito.push(producto);
+    }
+
+    console.log(carrito);
+} 
+
+const listaCarrito = document.getElementById("listaCarrito");
+const carritoVer = document.getElementById("carritoVer");
+
+carritoVer.addEventListener("click", () => {
+  mostrarCarrito();
+})
+
+const mostrarCarrito = () => {
+  listaCarrito.innerHTML = ` `;
+  listaCarrito.forEach(producto =>{
+    const card = document.createElement("div");
+    listaCarrito.innerHTML = 
+    `
+    <img src="" alt="">
+    <div>
+      <h2>${producto.nombre}</h2>
+      <p>${producto.precio}</p>
+      <button id="botonEliminar${producto.id}">eliminar producto</button>
+    </div>
+    `
+
+    listaCarrito.appendChild(card);
+
+    const boton = getElementById(`botonEliminar${producto.id}`);
+    boton.addEventListener("click", () => {
+      eliminarProducto(producto.id);
+    })
+  })
+
+}
+
+const eliminarProducto = (id) =>{
+  const producto = carrito.find(producto => producto.id === id);
+  const indice = carrito.indexOf(producto);
+  carrito.splice(indice,1);
+
+  mostrarCarrito();
+} 
